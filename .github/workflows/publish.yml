@@ -1,0 +1,20 @@
+on: push
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chekout Repo
+        uses: actions/checkout@v1
+      - name: use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm run test --if-present
+      - run: npm run build --if-present
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_STREAK_COUNTER }}
+          package: package.json
+          access: public
